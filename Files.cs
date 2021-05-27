@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+   
     class Files
     {
         public string[] FilesPath { get; private set; }
@@ -33,20 +34,17 @@ namespace ConsoleApp1
                 try
                 {
                     foreach (var filePath in FilesPath)
-                    { 
+                    {
+                        using var reader = new StreamReader(filePath, true);
+                        List<string> allLine = new List<string>();
+                        string line;
 
-                        using (var reader = new StreamReader(filePath, true))
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            List<string> allLine = new List<string>();
-                            string line;
-
-                            while ((line = reader.ReadLine()) != null)
-                            {
-                                allLine.AddRange(line.Split(' '));
-                            }
-
-                            wordsInFile.Add(new Tuple<string, List<string>>(filePath, allLine));
+                            allLine.AddRange(line.Split(' '));
                         }
+
+                        wordsInFile.Add(new Tuple<string, List<string>>(filePath, allLine));
                     }
                 }
                 finally
@@ -65,8 +63,8 @@ namespace ConsoleApp1
                     var frequentWord = wf.Item2
                         .GroupBy(w => w)
                         .Select(group => new {Name = group.Key, Count = group.Count()})
+                        .Where(c => c.Count >= 10)
                         .OrderByDescending(c => c.Count)
-                        .Take(10)
                         .Select(w => w.Name)
                         .ToList();
 
