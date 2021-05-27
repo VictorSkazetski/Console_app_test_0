@@ -17,19 +17,10 @@ namespace ConsoleApp1
 
         public void GetFilesPath()
         {
-            try
-            {
-                if (!Directory.Exists(DirectoryPath)) throw new Exception("директории не существует");
+            if (!Directory.Exists(DirectoryPath)) throw new Exception("директории не существует");
 
-                FilesPath = Directory.GetFiles(DirectoryPath, "*.txt", SearchOption.AllDirectories);
-                if (FilesPath?.Length == 0) throw new Exception("директория не содержит файлов с расширением .txt");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-
-                Environment.Exit(0);
-            }
+            FilesPath = Directory.GetFiles(DirectoryPath, "*.txt", SearchOption.AllDirectories);
+            if (FilesPath?.Length == 0) throw new Exception("директория не содержит файлов с расширением .txt");
 
         }
 
