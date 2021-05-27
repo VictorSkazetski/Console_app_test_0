@@ -18,10 +18,16 @@ namespace ConsoleApp1
 
         public void GetFilesPath()
         {
-            if (!Directory.Exists(DirectoryPath)) throw new Exception("директории не существует");
+            if (!Directory.Exists(DirectoryPath))
+            {
+                throw new Exception("директории не существует");
+            }
 
             FilesPath = Directory.GetFiles(DirectoryPath, "*.txt", SearchOption.AllDirectories);
-            if (FilesPath?.Length == 0) throw new Exception("директория не содержит файлов с расширением .txt");
+            if (FilesPath?.Length == 0)
+            {
+                throw new Exception("директория не содержит файлов с расширением .txt");
+            }
 
         }
 
@@ -34,17 +40,20 @@ namespace ConsoleApp1
                 try
                 {
                     foreach (var filePath in FilesPath)
-                    {
-                        using var reader = new StreamReader(filePath, true);
-                        List<string> allLine = new List<string>();
-                        string line;
+                    { 
 
-                        while ((line = reader.ReadLine()) != null)
+                        using (var reader = new StreamReader(filePath, true))
                         {
-                            allLine.AddRange(line.Split(' '));
-                        }
+                            List<string> allLine = new List<string>();
+                            string line;
 
-                        wordsInFile.Add(new Tuple<string, List<string>>(filePath, allLine));
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                allLine.AddRange(line.Split(' '));
+                            }
+
+                            wordsInFile.Add(new Tuple<string, List<string>>(filePath, allLine));
+                        }
                     }
                 }
                 finally
